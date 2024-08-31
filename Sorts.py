@@ -48,5 +48,29 @@ def solution(arr1, arr2):
         j += 1
 
     return answer
-print(solution([1, 2, 3], [4, 5, 6]))
-print(solution([1, 3, 5], [2, 4, 6]))
+# print(solution([1, 2, 3], [4, 5, 6]))
+# print(solution([1, 3, 5], [2, 4, 6]))
+
+
+## strings를 인자로 받아서 정렬하는데 정렬기준이 n번째 char값
+def solution(strings, n):
+    return sorted(strings, key=lambda x: (x[n], x))
+
+
+# print(solution(["sun", "bed", "car"], 1))
+# print(solution(["abce", "abcd", "cdx"], 2))
+
+def solution(n):
+    digits = list(str(n))
+    digits.sort(reverse=True)
+    return int("".join(digits))
+
+# print(solution(118372))
+
+def solution(array, commands):
+    answer = []
+    for i in range(len(commands)):
+        answer.append(sorted(array[commands[i][0]-1 : commands[i][1]])[commands[i][2]-1])
+    return answer
+
+print(solution([1, 5, 2, 6, 3, 7, 4], [[2, 5, 3], [4, 4, 1], [1, 7, 3]]))
