@@ -146,16 +146,34 @@ def solution(graph, start):
 # 1~n 까지 조합하여 10이 되는 조합의 리스트를 리턴해야한다.
 def solution(n):
     answer = []
+
     def backtrack(sum, num_list, start):
         if sum == 10:
             answer.append(num_list)
-
         for i in range(start, n+1):
             if sum <= 10:
-                backtrack(sum + i, num_list + [i], i + 1)
+                backtrack(sum+i, num_list + [i], i + 1)
 
     backtrack(0, [], 1)
     return answer
-print(solution(5)) # result = [[1, 2, 3, 4], [1, 4, 5], [2, 3, 5]]
-print(solution(2)) # result = []
-print(solution(7)) # result = [[1, 2, 3, 4], [1, 2, 7], [1, 3, 6], [1, 4, 5], [2, 3, 5], [3, 7], [4, 6]]
+# print(solution(5)) # result = [[1, 2, 3, 4], [1, 4, 5], [2, 3, 5]]
+# print(solution(2)) # result = []
+# print(solution(7)) # result = [[1, 2, 3, 4], [1, 2, 7], [1, 3, 6], [1, 4, 5], [2, 3, 5], [3, 7], [4, 6]]
+
+# N퀸
+def solution(n):
+    def queen(y, width, diagonal1, diagonal2):
+        answer = 0
+        if y == n:
+            return 1
+        else:
+            for i in range(n):
+                if width[i] or diagonal1[y + i] or diagonal2[y - i + n]:
+                    continue
+                width[i] = diagonal1[y + i] = diagonal2[y - i + n] = True
+                answer += queen(y + 1, width, diagonal1, diagonal2)
+                width[i] = diagonal1[y + i] = diagonal2[y - i + n] = False
+        return answer
+
+    return queen(0, [False] * n, [False] * (n*2), [False] * (n*2))
+print(solution(4)) # answer = 2
