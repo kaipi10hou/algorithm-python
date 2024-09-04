@@ -35,3 +35,33 @@
 # N퀸
 
 # print(solution(4)) # answer = 2
+
+
+################################### 거스름돈
+def solution(amount):
+    denominations = [100, 50, 10, 1]
+    answer = []
+    return answer
+
+
+# print(solution(123))  # answer = [100, 10, 10, 1, 1, 1]
+# print(solution(350))  # answer = [100, 100, 100, 50]
+
+
+################################## 부분배낭문제
+def solution(items, weight_limit):
+    answer = 0
+    return answer
+
+
+# print(solution([[10, 19], [7, 10], [6, 10]], 15))  # answer = 27.33
+# print(solution([[10, 60], [20, 100], [30, 120]], 50))  # answer = 240
+
+
+################################## 구명보트문제
+def solution(people, limit):
+    answer = 0
+    return answer
+
+# print(solution([70, 50, 80, 50], 100))  # answer = 3
+# print(solution([70, 80, 50], 100))  # answer = 3

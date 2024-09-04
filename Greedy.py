@@ -22,9 +22,11 @@ def calculate_unit_value(items):
         item.append(item[1] / item[0])
     return items
 
+
 def sort_by_unit_value(items):
     items.sort(key=lambda x: x[2], reverse=True)
     return items
+
 
 def knapsack(items, weight_limit):
     total_value = 0
@@ -40,6 +42,7 @@ def knapsack(items, weight_limit):
             break
     return total_value
 
+
 def solution(items, weight_limit):
     items = calculate_unit_value(items)
     items = sort_by_unit_value(items)
@@ -47,5 +50,24 @@ def solution(items, weight_limit):
     return knapsack(items, weight_limit)
 
 
-print(solution([[10, 19], [7, 10], [6, 10]], 15))
-print(solution([[10, 60], [20, 100], [30, 120]], 50))
+print(solution([[10, 19], [7, 10], [6, 10]], 15))  # answer = 27.33
+print(solution([[10, 60], [20, 100], [30, 120]], 50))  # answer = 240
+
+
+def solution(people, limit):
+    answer = 0
+    people.sort()
+    i = 0
+    j = len(people) - 1
+
+    while i <= j:
+        if people[j] + people[i] <= limit:
+            i += 1
+        j -= 1
+        answer += 1
+
+    return answer
+
+
+print(solution([70, 50, 80, 50], 100))  # answer = 3
+print(solution([70, 80, 50], 100))  # answer = 3
