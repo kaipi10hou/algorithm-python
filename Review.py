@@ -49,6 +49,7 @@ def solution(amount):
 
 
 ################################## 부분배낭문제
+# items는 [무게, 가치]가 배열로 담김, weight_limit은 배낭무게한도
 def solution(items, weight_limit):
     answer = 0
     return answer
@@ -59,6 +60,7 @@ def solution(items, weight_limit):
 
 
 ################################## 구명보트문제
+# 사람들의 무게가 배열로 담긴 people, 보트의 제한무게 limit
 def solution(people, limit):
     answer = 0
     return answer
