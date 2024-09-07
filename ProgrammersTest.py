@@ -464,68 +464,85 @@
 # TEST 코드 입니다. 주석을 풀고 실행시켜보세요
 # print(solution([(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7), (4, 8), (5, 8), (6, 9), (7, 9)],1)) # 반환값 :[1, 2, 3, 4, 5, 6, 7, 8, 9]
 # print(solution([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 0)],1)) # 반환값 : [1, 2, 3, 4, 5, 0]
-#
-# from collections import deque
-#
-# def solution(maps):
-#     move = [[-1, 0], [0, -1], [0, 1], [1, 0]]
-#
-#     n = len(maps)
-#     m = len(maps[0])
-#
-#     dist = [[-1] * m for _ in range(n)]
-#
-#     def bfs(start):
-#         q = deque([start])
-#         dist[start[0]][start[1]] = 1
-#
-#         while q:
-#             here = q.popleft()
-#
-#             for direct in move:
-#                 row, column = here[0] + direct[0], here[1] + direct[1]
-#
-#                 if row < 0 or row >= n or column < 0 or column >= m:
-#                     continue
-#
-#                 if maps[row][column] == 0:
-#                     continue
-#
-#                 if dist[row][column] == -1:
-#                     q.append([row, column])
-#                     dist[row][column] = dist[here[0]][here[1]] + 1
-#
-#         # return dist
-#
-#     bfs([0, 0])
-#
-#     return dist[n-1][m-1]
-#
-# # map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,1],[0,0,0,0,1]]
-# map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,0],[0,0,0,0,1]]
+
+from collections import deque
+
+def solution(maps):
+    move = [[-1, 0], [0, -1], [0, 1], [1, 0]]
+
+    n = len(maps)
+    m = len(maps[0])
+
+    dist = [[-1] * m for _ in range(n)]
+
+    def bfs(start):
+        q = deque([start])
+        dist[start[0]][start[1]] = 1
+
+        while q:
+            here = q.popleft()
+
+            for direct in move:
+                row, column = here[0] + direct[0], here[1] + direct[1]
+
+                if row < 0 or row >= n or column < 0 or column >= m:
+                    continue
+
+                if maps[row][column] == 0:
+                    continue
+
+                if dist[row][column] == -1:
+                    q.append([row, column])
+                    dist[row][column] = dist[here[0]][here[1]] + 1
+
+        # return dist
+
+    bfs([0, 0])
+
+    return dist[n-1][m-1]
+
+# map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,1],[0,0,0,0,1]]
+map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,0],[0,0,0,0,1]]
 # print(solution(map))
 
 
 ### 네트워크(깊이우선탐색)
 
 # solution은 컴퓨터(노드)의 개수 n과 연결상태를 나타내는 배열 computers를 파라미터로 한다.
-# def solution(n, computers):
-#     answer = 0
-#
-#     # node에 방문을 했었는지 여부 배열
-#     visited = [False] * n
-#     # computers를 각 index 출발로 깊이우선탐색하며 첫방문 노드인 경우 answer + 1
-#     def dfs(node, computers, visited):
-#         visited[node] = True # 방문처리
-#         for idx, connect in enumerate(computers[node]):
-#             if connect and not visited[idx]: # [1, 1, 0] 에 대해서 1이면서, visited가 False면 깊이탐색
-#                 dfs(idx, computers, visited)
-#
-#     for i in range(n):
-#         if not visited[i]:
-#             dfs(i, computers, visited)
-#             answer += 1
-#
-#     return answer
-#
+def solution(n, computers):
+    answer = 0
+
+    # node에 방문을 했었는지 여부 배열
+    visited = [False] * n
+    # computers를 각 index 출발로 깊이우선탐색하며 첫방문 노드인 경우 answer + 1
+    def dfs(node, computers, visited):
+        visited[node] = True # 방문처리
+        for idx, connect in enumerate(computers[node]):
+            if connect and not visited[idx]: # [1, 1, 0] 에 대해서 1이면서, visited가 False면 깊이탐색
+                dfs(idx, computers, visited)
+
+    for i in range(n):
+        if not visited[i]:
+            dfs(i, computers, visited)
+            answer += 1
+
+    return answer
+
 # print(solution(3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]	))
+
+# https://school.programmers.co.kr/learn/courses/30/lessons/12949
+def solution(arr1, arr2):
+    r1, c1 = len(arr1), len(arr1[0])
+    r2, c2 = len(arr2), len(arr2[0])
+
+    answer = [[0] * c2 for _ in range(r1)]
+
+    for i in range(r1):
+        for j in range(c2):
+            for k in range(c1):
+                answer[i][j] += arr1[i][k] * arr2[k][j]
+
+    return answer
+
+# print(solution([[1, 4], [3, 2], [4, 1]], [[3, 3], [3, 3]])) # [[15, 15], [15, 15], [15, 15]]
+# print(solution([[2, 3, 2], [4, 2, 4], [3, 1, 4]]	, [[5, 4, 3], [2, 4, 1], [3, 1, 1]]	)) # [[22, 22, 11], [36, 28, 18], [29, 20, 14]]
