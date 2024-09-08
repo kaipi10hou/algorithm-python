@@ -546,3 +546,41 @@ def solution(arr1, arr2):
 
 # print(solution([[1, 4], [3, 2], [4, 1]], [[3, 3], [3, 3]])) # [[15, 15], [15, 15], [15, 15]]
 # print(solution([[2, 3, 2], [4, 2, 4], [3, 1, 4]]	, [[5, 4, 3], [2, 4, 1], [3, 1, 1]]	)) # [[22, 22, 11], [36, 28, 18], [29, 20, 14]]
+
+
+#https://school.programmers.co.kr/learn/courses/30/lessons/132265?language=python3
+def solution(topping):
+    answer = 0
+    for i in range(len(topping)):
+        set1 = set(topping[:i])
+        set2 = set(topping[i:])
+        if len(set1) == len(set2):
+            answer += 1
+    return answer
+
+# print(solution([1, 2, 1, 3, 1, 4, 1, 2])) # result = 2
+# print(solution([1, 2, 3, 1, 4])) # result = 0
+# ㄴ 시간복잡도에서 털린다
+
+from collections import Counter
+
+
+# ㄴ 다른사람의 풀이
+def solution(topping):
+    answer = 0
+    dic = Counter(topping)
+    set_dic = set()
+    answer = 0
+
+    for i in topping:
+        dic[i] -= 1
+        set_dic.add(i)
+        if dic[i] == 0:
+            dic.pop(i)
+        if len(dic) == len(set_dic):
+            answer += 1
+
+    return answer
+
+print(solution([1, 2, 1, 3, 1, 4, 1, 2])) # result = 2
+print(solution([1, 2, 3, 1, 4])) # result = 0
