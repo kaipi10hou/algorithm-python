@@ -467,6 +467,7 @@
 
 from collections import deque
 
+
 def solution(maps):
     move = [[-1, 0], [0, -1], [0, 1], [1, 0]]
 
@@ -499,10 +500,13 @@ def solution(maps):
 
     bfs([0, 0])
 
-    return dist[n-1][m-1]
+    return dist[n - 1][m - 1]
+
 
 # map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,1],[0,0,0,0,1]]
-map = [[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,0],[0,0,0,0,1]]
+map = [[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 0], [0, 0, 0, 0, 1]]
+
+
 # print(solution(map))
 
 
@@ -514,11 +518,12 @@ def solution(n, computers):
 
     # node에 방문을 했었는지 여부 배열
     visited = [False] * n
+
     # computers를 각 index 출발로 깊이우선탐색하며 첫방문 노드인 경우 answer + 1
     def dfs(node, computers, visited):
-        visited[node] = True # 방문처리
+        visited[node] = True  # 방문처리
         for idx, connect in enumerate(computers[node]):
-            if connect and not visited[idx]: # [1, 1, 0] 에 대해서 1이면서, visited가 False면 깊이탐색
+            if connect and not visited[idx]:  # [1, 1, 0] 에 대해서 1이면서, visited가 False면 깊이탐색
                 dfs(idx, computers, visited)
 
     for i in range(n):
@@ -527,6 +532,7 @@ def solution(n, computers):
             answer += 1
 
     return answer
+
 
 # print(solution(3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]	))
 
@@ -544,11 +550,12 @@ def solution(arr1, arr2):
 
     return answer
 
+
 # print(solution([[1, 4], [3, 2], [4, 1]], [[3, 3], [3, 3]])) # [[15, 15], [15, 15], [15, 15]]
 # print(solution([[2, 3, 2], [4, 2, 4], [3, 1, 4]]	, [[5, 4, 3], [2, 4, 1], [3, 1, 1]]	)) # [[22, 22, 11], [36, 28, 18], [29, 20, 14]]
 
 
-#https://school.programmers.co.kr/learn/courses/30/lessons/132265?language=python3
+# https://school.programmers.co.kr/learn/courses/30/lessons/132265?language=python3
 def solution(topping):
     answer = 0
     for i in range(len(topping)):
@@ -558,6 +565,7 @@ def solution(topping):
             answer += 1
     return answer
 
+
 # print(solution([1, 2, 1, 3, 1, 4, 1, 2])) # result = 2
 # print(solution([1, 2, 3, 1, 4])) # result = 0
 # ㄴ 시간복잡도에서 털린다
@@ -565,22 +573,62 @@ def solution(topping):
 from collections import Counter
 
 
-# ㄴ 다른사람의 풀이
 def solution(topping):
     answer = 0
-    dic = Counter(topping)
-    set_dic = set()
-    answer = 0
+    topping_dict = Counter(topping)
+    topping_set = set()
 
-    for i in topping:
-        dic[i] -= 1
-        set_dic.add(i)
-        if dic[i] == 0:
-            dic.pop(i)
-        if len(dic) == len(set_dic):
+    for t in topping:
+        topping_dict[t] -= 1
+        topping_set.add(t)
+        if topping_dict[t] == 0:
+            topping_dict.pop(t)
+        if len(topping_dict) == len(topping_set):
             answer += 1
 
     return answer
 
-print(solution([1, 2, 1, 3, 1, 4, 1, 2])) # result = 2
-print(solution([1, 2, 3, 1, 4])) # result = 0
+
+# print(solution([1, 2, 1, 3, 1, 4, 1, 2])) # result = 2
+# print(solution([1, 2, 3, 1, 4])) # result = 0
+
+
+# https://school.programmers.co.kr/learn/courses/30/lessons/1844
+
+from collections import deque
+
+def solution(maps):
+    move = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    n = len(maps)
+    m = len(maps[0])
+
+    dist = [[-1] * m for _ in range(n)]
+
+    def bfs(start):
+        q = deque([start])
+        dist[start[0]][start[1]] = 1
+
+        while q:
+            here = q.popleft()
+
+            for direct in move:
+                row, column = here[0] + direct[0], here[1] + direct[1]
+
+                if row < 0 or row >= n or column < 0 or column >= m:
+                    continue
+
+                if maps[row][column] == 0:
+                    continue
+
+                if dist[row][column] == -1:
+                    q.append([row, column])
+                    dist[row][column] = dist[here[0]][here[1]] + 1
+
+        return dist
+
+    bfs([0, 0])
+
+    return dist[n-1][m-1]
+
+print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 1], [0, 0, 0, 0, 1]]))  # 11
+print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 0], [0, 0, 0, 0, 1]]))  # -1
