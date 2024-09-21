@@ -534,7 +534,35 @@ def solution(n, computers):
     return answer
 
 
-# print(solution(3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]	))
+def solution(n, computers):
+    answer = 0
+
+    # node에 방문을 했었는지 여부 배열
+    visited = [False] * n
+
+    # 스택을 이용한 깊이 우선 탐색 (DFS)
+    def dfs_stack(node, computers, visited):
+        stack = [node]  # 초기 스택에 시작 노드 추가
+        while stack:
+            current_node = stack.pop()  # 스택에서 노드를 꺼냄
+            if not visited[current_node]:
+                visited[current_node] = True  # 방문처리
+                # 현재 노드와 연결된 노드를 스택에 추가 (연결되었고 방문하지 않은 노드만)
+                for idx, connect in enumerate(computers[current_node]):
+                    if connect and not visited[idx]:
+                        stack.append(idx)  # 연결된 노드가 있으면 스택에 추가
+
+    for i in range(n):
+        if not visited[i]:
+            dfs_stack(i, computers, visited)  # 스택 기반 DFS 호출
+            answer += 1  # 새로운 네트워크를 찾았으므로 +1
+
+    return answer
+
+
+#
+# print(solution(3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]))
+
 
 # https://school.programmers.co.kr/learn/courses/30/lessons/12949
 def solution(arr1, arr2):
@@ -597,11 +625,11 @@ def solution(topping):
 
 from collections import deque
 
+
 def solution(maps):
     move = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     n = len(maps)
     m = len(maps[0])
-
     dist = [[-1] * m for _ in range(n)]
 
     def bfs(start):
@@ -609,10 +637,9 @@ def solution(maps):
         dist[start[0]][start[1]] = 1
 
         while q:
-            here = q.popleft()
-
-            for direct in move:
-                row, column = here[0] + direct[0], here[1] + direct[1]
+            curr = q.popleft()
+            for mv in move:
+                row, column = curr[0] + mv[0], curr[1] + mv[1]
 
                 if row < 0 or row >= n or column < 0 or column >= m:
                     continue
@@ -622,13 +649,61 @@ def solution(maps):
 
                 if dist[row][column] == -1:
                     q.append([row, column])
-                    dist[row][column] = dist[here[0]][here[1]] + 1
-
-        return dist
+                    dist[row][column] = dist[curr[0]][curr[1]] + 1
 
     bfs([0, 0])
+    return dist[n - 1][m - 1]
 
-    return dist[n-1][m-1]
 
-print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 1], [0, 0, 0, 0, 1]]))  # 11
-print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 0], [0, 0, 0, 0, 1]]))  # -1
+# print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 1], [0, 0, 0, 0, 1]]))  # 11
+# print(solution([[1, 0, 1, 1, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 1, 1, 0, 0], [0, 0, 0, 0, 1]]))  # -1
+
+def dfs(visited, computers, node):
+    visited[node] = True
+    for idx, com in enumerate(computers[node]):
+        if com and not visited[idx]:
+            dfs(visited, computers, idx)
+
+
+def solution(n, computers):
+    visited = [False] * n
+    answer = 0
+
+    for i in range(n):
+        if not visited[i]:
+            dfs(visited, computers, i)
+            answer += 1
+    return answer
+
+
+# print(solution(3, [[1, 1, 0], [1, 1, 0], [0, 0, 1]]))  # 2
+# print(solution(3, [[1, 1, 0], [1, 1, 1], [0, 1, 1]]))  # 1
+
+
+def solution(genres, plays):
+    answer = []
+
+    genres_dict = {}
+    play_dict = {}
+
+    for i in range(len(genres)):
+        genre = genres[i]
+        play = plays[i]
+        if genre not in genres_dict:
+            genres_dict[genre] = []
+            play_dict[genre] = 0
+        genres_dict[genre].append((i, play))
+        play_dict[genre] += play
+
+    sorted_genres = sorted(play_dict.items(), key=lambda x: x[1], reverse=True)
+    print(sorted_genres)
+
+    for genre, _ in sorted_genres:
+        sorted_songs = sorted(genres_dict[genre], key=lambda x: (-x[1], x[0]))
+        answer.extend(idx for idx, _ in sorted_songs[:2])
+
+    return answer
+
+
+# print(solution(["classic", "pop", "classic", "classic", "pop"], [500, 600, 150, 800, 2500]))
+print(solution(["pop", "pop", "classic", "classic", "pop"], [100, 120, 250, 250, 120]))  # [4, 1, 3, 0]

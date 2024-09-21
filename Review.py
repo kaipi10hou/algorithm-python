@@ -6,6 +6,7 @@ class Node:
         self.left = None
         self.right = None
 
+
 class BST:
     def __init__(self):
         self.root = None
@@ -37,6 +38,7 @@ class BST:
                 curr = curr.right
         return curr
 
+
 def solution(lst, search_lst):
     bst = BST()
     for n in lst:
@@ -51,6 +53,7 @@ def solution(lst, search_lst):
 
     return answer
 
+
 # print(solution([5, 3, 8, 4, 2, 1, 7, 10], [1, 2, 5, 6])) # 반환값: [True, True, True, False]
 # print(solution([1, 3, 5, 7, 9], [2, 4, 6, 8, 10])) # 반환값: [False, False, False, False, False]
 
@@ -63,11 +66,13 @@ def find(arr, x):
     arr[x] = find(arr, arr[x])
     return arr[x]
 
+
 def union(arr, x, y):
     root1 = find(arr, x)
     root2 = find(arr, y)
 
     arr[root2] = root1
+
 
 def solution(k, operations):
     arr = [i for i in range(k)]
@@ -78,6 +83,7 @@ def solution(k, operations):
             find(arr, op[1])
     return len(set(find(arr, x) for x in range(k)))
 
+
 # print(solution(3, [['u', 0, 1], ['u', 1, 2], ['f', 2]])) # 반환값: 1
 # print(solution(4, [['u', 0, 1], ['u', 2, 3], ['f', 0]])) # 반환값: 2
 
@@ -86,6 +92,7 @@ def solution(k, operations):
 # start를 시작노드로 graph탐색하는데 방문순서를 배열에 담아 리턴
 
 from collections import defaultdict
+
 
 def solution(graph, start):
     adj_list = defaultdict(list)
@@ -106,7 +113,6 @@ def solution(graph, start):
     return answer
 
 
-
 # print(solution([['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'E']], 'A')) # 반환값: ['A', 'B', 'C', 'D', 'E']
 # print(solution([['A', 'B'], ['A', 'C'], ['B', 'D'], ['B', 'E'], ['C', 'F'], ['E', 'F']], 'A')) # 반환값: ['A', 'B', 'D', 'E', 'F', 'C']
 
@@ -116,6 +122,7 @@ def solution(graph, start):
 
 from collections import deque
 
+
 def solution(graph, start):
     adj_list = defaultdict(list)
     for u, v in graph:
@@ -123,7 +130,7 @@ def solution(graph, start):
 
     answer = []
     visited = set()
-    q= deque([start])
+    q = deque([start])
 
     answer.append(start)
     visited.add(start)
@@ -139,6 +146,7 @@ def solution(graph, start):
 
     return answer
 
+
 # print(solution([(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7), (4, 8), (5, 8), (6, 9), (7, 9)],1)) # 반환값 :[1, 2, 3, 4, 5, 6, 7, 8, 9]
 # print(solution([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 0)],1)) # 반환값 : [1, 2, 3, 4, 5, 0]
 
@@ -147,16 +155,18 @@ def solution(graph, start):
 # 1~n 까지 조합하여 10이 되는 조합의 리스트를 리턴해야한다.
 def solution(n):
     answer = []
+
     def backtrack(sum, num_list, start):
         if sum == 10:
             answer.append(num_list)
         else:
-            for i in range(start, n+1):
+            for i in range(start, n + 1):
                 if sum <= 10:
-                    backtrack(sum+i, num_list + [i], i+1)
+                    backtrack(sum + i, num_list + [i], i + 1)
 
     backtrack(0, [], 1)
     return answer
+
 
 # print(solution(5)) # result = [[1, 2, 3, 4], [1, 4, 5], [2, 3, 5]]
 # print(solution(2)) # result = []
@@ -172,13 +182,14 @@ def solution(n):
             if width[i] or diagonal1[i + y] or diagonal2[i - y + n]:
                 continue
             width[i] = diagonal1[i + y] = diagonal2[i - y + n] = True
-            answer += getAns(n, y+1, width, diagonal1, diagonal2)
+            answer += getAns(n, y + 1, width, diagonal1, diagonal2)
             width[i] = diagonal1[i + y] = diagonal2[i - y + n] = False
         return answer
 
     return getAns(n, 0, [False] * n, [False] * n * 2, [False] * n * 2)
 
-print(solution(4)) # answer = 2
+
+# print(solution(4)) # answer = 2
 
 
 ################################### 거스름돈
@@ -235,5 +246,36 @@ def solution(people, limit):
 
     return answer
 
+
 # print(solution([70, 50, 80, 50], 100))  # answer = 3
 # print(solution([70, 80, 50], 100))  # answer = 3
+
+
+def solution(genres, plays):
+    answer = []
+
+    g_dic = {}
+    p_dic = {}
+
+    for i in range(len(genres)):
+        genre = genres[i]
+        play = plays[i]
+
+        if genre not in g_dic:
+            g_dic[genre] = []
+            p_dic[genre] = 0
+
+        g_dic[genre].append((i, play))
+        p_dic[genre] += play
+
+    sorted_pop = sorted(p_dic.items(), key=lambda x: x[1], reverse=True)
+
+    for g, _ in sorted_pop:
+        g_dic[g].sort(key=lambda x: x[1], reverse=True)
+        answer.extend(i for i, _ in g_dic[g][:2])
+
+    return answer
+
+
+# print(solution(["classic", "pop", "classic", "classic", "pop"], [500, 600, 150, 800, 2500]))  # [4, 1, 3, 0]
+print(solution(["pop", "pop", "classic", "classic", "pop"], [100, 100, 250, 250, 100]))  # [4, 1, 3, 0]
