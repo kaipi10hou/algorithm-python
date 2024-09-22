@@ -706,4 +706,41 @@ def solution(genres, plays):
 
 
 # print(solution(["classic", "pop", "classic", "classic", "pop"], [500, 600, 150, 800, 2500]))
-print(solution(["pop", "pop", "classic", "classic", "pop"], [100, 120, 250, 250, 120]))  # [4, 1, 3, 0]
+# print(solution(["pop", "pop", "classic", "classic", "pop"], [100, 120, 250, 250, 120]))  # [4, 1, 3, 0]
+
+
+def solution(clothes):
+    answer = 1
+    c_dict = {}
+    for cloth in clothes:
+        if cloth[1] not in c_dict:
+            c_dict[cloth[1]] = []
+        c_dict[cloth[1]].append(cloth[0])
+    print(c_dict)
+
+    for _, v in c_dict.items():
+        answer *= len(v) + 1
+
+    return answer - 1
+
+
+# print(solution([["yellow_hat", "headgear"], ["blue_sunglasses", "eyewear"], ["green_turban", "headgear"]]))  # 5
+# print(solution([["crow_mask", "face"], ["blue_sunglasses", "face"], ["smoky_makeup", "face"]]))  # 3
+# print(solution([["yellow_hat", "headgear"], ["blue_sunglasses", "eyewear"], ["green_turban", "headgear"], ["crow_mask", "face"], ["blue_sunglasses", "face"], ["smoky_makeup", "face"]]))  # 23
+
+def solution(numbers):
+    # 숫자를 문자열로 변환
+    nums = [str(n) for n in numbers]
+
+    # 문자열을 기준으로 내림차순 정렬 (n*3은 최대 4자리 비교를 위한 것)
+    sorted_nums = sorted(nums, key=lambda n: n * 3, reverse=True)
+
+    # 정렬된 숫자들을 이어 붙임
+    answer = ''.join(sorted_nums)
+
+    # '000'처럼 나오는 경우 '0'으로 반환
+    return answer if answer[0] != '0' else '0'
+
+print(solution([6, 10, 2]))  # [6, 10, 2]
+print(solution([3, 30, 34, 5, 9]))  # 9534330
+print(solution([356, 365]))  # 9534330
